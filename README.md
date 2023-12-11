@@ -1,1 +1,1 @@
-# cute-iot
+# CuteIoT
