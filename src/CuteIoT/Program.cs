@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using CuteIoT.Epaper;
 using CuteIoT.Resources;
@@ -6,31 +7,41 @@ using CuteIoT.Resources;
 
 namespace CuteIoT
 {
-    using Img = Bitmaps.Num1;
-
     public class Program
     {
+        private static Display display = null!;
+
         public static void Main()
         {
-            using var display = new Display();
+            display = new Display();
             display.Init();
-            display.EraseDisplayFast();
 
             display.SetRotation(1);
+            display.FillScreen(Color.Black);
+            display.DrawBitmap(Bitmaps.CuteCatSleeping.Bitmap, 0, 0, Bitmaps.CuteCatSleeping.Width, Bitmaps.CuteCatSleeping.Heigth, Color.White);
 
-            display.SetFontSize(3);
-            display.SetCursor(0, 0);
-
-            display.FillScreen(Color.White);
-            display.DrawBitmap(Img.Bitmap, 0, 28, Img.Width, Img.Heigth, Color.White);
-            display.DrawBitmap(Img.Bitmap, Img.Width + 0, 28, Img.Width, Img.Heigth, Color.White);
-            display.DrawBitmap(Img.Bitmap, 2 * (Img.Width + 0), 28, Img.Width, Img.Heigth, Color.White);
-            display.DrawBitmap(Img.Bitmap, 3 * (Img.Width + 0), 28, Img.Width, Img.Heigth, Color.White);
-
-            display.Write("Hello world!");
+            display.SetFontSize(2);
+            display.SetCursor(2, 2);
+            display.SetTextColor(Color.White);
+            display.Write("loading...");
             display.UpdateWindow(0, 0, display.Width, display.Height);
 
+            // loading
+            Thread.Sleep(TimeSpan.FromSeconds(2));
+            var timer = new Timer(RefreshScreen, null, 1000, 1000);
+            display.FillScreen(Color.White);
+            display.UpdateWindow(0, 0, display.Width, display.Height);
+
+
             Thread.Sleep(Timeout.Infinite);
+        }
+
+        private static void RefreshScreen(object p)
+        {
+            display.SetCursor(0, 0);
+            display.SetTextColor(Color.Black);
+            display.Write(DateTime.UtcNow.ToString("HH:mm:ss"));
+            display.UpdateWindow(0, 0, 128, 50);
         }
     }
 }

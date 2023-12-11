@@ -2,7 +2,7 @@
 {
     public static partial class Bitmaps
     {
-        public static class CuteCat
+        public static class CuteCatSleeping
         {
             public const int Width = 208;
             public const int Heigth = 122;

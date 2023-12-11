@@ -7,7 +7,7 @@
             public const int Width = 48;
             public const int Heigth = 48;
 
-            public static readonly byte[][] All { Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine };
+            public static readonly byte[][] All = { Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine };
 
             public static readonly byte[] Zero = {
                 // 'free-icon-zero-9770782', 48x48px
