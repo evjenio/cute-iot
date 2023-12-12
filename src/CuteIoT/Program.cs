@@ -20,6 +20,7 @@ namespace CuteIoT
         private static readonly ToolBarSeparator _toolBarSeparator = new();
         private static readonly TextClockWidget _textClockWidget = new();
         private static readonly ClockWidget _clockWidget = new();
+        private static readonly CurrentWeatherWidget _currentWeatherWidget = new();
 
         public static void Main()
         {
@@ -38,19 +39,32 @@ namespace CuteIoT
             _toolBarSeparator.Draw(_display);
             _wifiWidget.Draw(_display);
             var wifi = new Wifi(_wifiWidget);
-            wifi.Connect(_display);  
-
-            var timer1Minute = new Timer(RefreshScreen, null, TimeSpan.FromMinutes(1).Subtract(TimeSpan.FromSeconds(DateTime.UtcNow.Second)), TimeSpan.FromMinutes(1));
+            wifi.Connect(_display);
+            
+            DrawClockAndToolbar(null);
+            var timer1Minute = new Timer(DrawClockAndToolbar, null, TimeSpan.FromMinutes(1).Subtract(TimeSpan.FromSeconds(DateTime.UtcNow.Second)), TimeSpan.FromMinutes(1));
+            var timer30Minute = new Timer(DrawWeather, null, TimeSpan.Zero, TimeSpan.FromMinutes(30));
 
             Thread.Sleep(Timeout.Infinite);
         }
 
-        private static void RefreshScreen(object p)
+        private static void DrawClockAndToolbar(object? p)
         {
             var datetime = DateTime.UtcNow.AddHours(TimeZone);
-            _clockWidget.Draw(_display, datetime);
-            _textClockWidget.Draw(_display, datetime);
-            _wifiWidget.Draw(_display);
+            lock (_display)
+            {
+                // _clockWidget.Draw(_display, datetime);
+                _textClockWidget.Draw(_display, datetime);
+                _wifiWidget.Draw(_display);
+            }
+        }
+
+        private static void DrawWeather(object? p)
+        {
+            lock (_display)
+            {
+                _currentWeatherWidget.Draw(_display);
+            }
         }
     }
 }

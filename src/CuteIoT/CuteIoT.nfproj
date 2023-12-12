@@ -26,6 +26,7 @@
     <Compile Include="Resources\Bitmaps.Numbers.cs" />
     <Compile Include="Services\Wifi.cs" />
     <Compile Include="Widgets\ClockWidget.cs" />
+    <Compile Include="Widgets\CurrentWeatherWidget.cs" />
     <Compile Include="Widgets\TextClockWidget.cs" />
     <Compile Include="Widgets\ToolBarSeparator.cs" />
     <Compile Include="Widgets\WifiWidget.cs" />
