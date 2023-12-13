@@ -39,7 +39,7 @@ namespace CuteIoT.Widgets
             {
                 display.DrawBitmap(NoSignal, X, Y, W, H, Color.White);
             }
-            display.UpdateWindow(0, 0, display.Width, display.Height);
+            display.UpdateWindow(X, Y, W, H);
         }
     }
 }

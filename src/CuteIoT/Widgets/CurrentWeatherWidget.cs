@@ -1,14 +1,17 @@
 ﻿using System;
 using CuteIoT.Epaper;
+using CuteIoT.Services;
 
 namespace CuteIoT.Widgets
 {
     internal class CurrentWeatherWidget
     {
-        public int X { get; set; } = 40;
-        public int Y { get; set; } = 40;
-        public int H { get; set; } = 48;
-        public int W { get; set; } = 48;
+        public int X { get; set; } = 80;
+        public int Y { get; set; } = 50;
+        private const int H = 48+6;
+        //private const int W = 2 * 48;
+        private const int IconHeight = 48;
+        private const int IconWidth = 48;
 
         private static readonly byte[] Snowflake = {
             // 'free-icon-snowflake-2058415', 48x48px
@@ -32,10 +35,34 @@ namespace CuteIoT.Widgets
             0xfe, 0x7f, 0xff, 0xff, 0xff, 0xff, 0xfe, 0x7f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff
         };
 
-        public void Draw(Display display)
+        public void Draw(Display display, WeatherResponse weatherResponse)
         {
-            display.DrawBitmap(Snowflake, X, Y, W, H, Color.White);
-            display.UpdateWindow(X, Y, W, H);
+            var dt = DateTime.FromUnixTimeSeconds(weatherResponse.Dt).AddSeconds(weatherResponse.Timezone);
+
+            //icon
+            display.DrawBitmap(Snowflake, X, Y, IconWidth, IconHeight, Color.White);
+            
+            //temp
+            display.SetCursor(X + IconWidth + 5, Y + 3);
+            display.SetFontSize(3);
+            display.Write(weatherResponse.Main.Temp.ToString("F0"));
+            display.AddCursorY(-2);
+            display.SetFontSize(1);
+            display.Write("o");
+
+            //feels like
+            display.SetCursor(X + IconWidth + 5, Y + 28 + 3);
+            display.SetFontSize(2);
+            display.Write(weatherResponse.Main.Feels_Like.ToString("F0"));
+            display.AddCursorY(-2);
+            display.SetFontSize(1);
+            display.Write("o");
+
+            // conditions
+            display.SetCursor(X, Y + IconHeight);
+            display.Write(weatherResponse.Weather[0].Main + " @ " + dt.ToString("HH:mm:ss"));
+
+            display.UpdateWindow(X, Y, display.Width - X - 1, H);
         }
     }
 }

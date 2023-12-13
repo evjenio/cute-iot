@@ -24,7 +24,12 @@
     <Compile Include="Resources\Bitmaps.CuteCat.cs" />
     <Compile Include="Resources\Bitmaps.CuteCatSleeping.cs" />
     <Compile Include="Resources\Bitmaps.Numbers.cs" />
-    <Compile Include="Services\Wifi.cs" />
+    <Compile Include="Services\Configuration.cs" />
+    <Compile Include="Services\ConfigurationService.cs" />
+    <Compile Include="Services\WeatherService.cs" />
+    <Compile Include="Services\WeatherResponse.cs" />
+    <Compile Include="Services\WifiService.cs" />
+    <Compile Include="Widgets\BatteryWidget.cs" />
     <Compile Include="Widgets\ClockWidget.cs" />
     <Compile Include="Widgets\CurrentWeatherWidget.cs" />
     <Compile Include="Widgets\TextClockWidget.cs" />
@@ -38,8 +43,14 @@
     <Reference Include="mscorlib">
       <HintPath>..\..\packages\nanoFramework.CoreLibrary.1.15.5\lib\mscorlib.dll</HintPath>
     </Reference>
+    <Reference Include="nanoFramework.Json">
+      <HintPath>..\..\packages\nanoFramework.Json.2.2.103\lib\nanoFramework.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nanoFramework.Runtime.Events">
       <HintPath>..\..\packages\nanoFramework.Runtime.Events.1.11.15\lib\nanoFramework.Runtime.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.System.Collections">
+      <HintPath>..\..\packages\nanoFramework.System.Collections.1.5.31\lib\nanoFramework.System.Collections.dll</HintPath>
     </Reference>
     <Reference Include="nanoFramework.System.Runtime">
       <HintPath>..\..\packages\nanoFramework.System.Runtime.1.0.6\lib\nanoFramework.System.Runtime.dll</HintPath>
@@ -58,6 +69,9 @@
     </Reference>
     <Reference Include="System.Net">
       <HintPath>..\..\packages\nanoFramework.System.Net.1.10.64\lib\System.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\..\packages\nanoFramework.System.Net.Http.Client.1.5.113\lib\System.Net.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading">
       <HintPath>..\..\packages\nanoFramework.System.Threading.1.1.32\lib\System.Threading.dll</HintPath>
