@@ -32,6 +32,7 @@
     <Compile Include="Widgets\BatteryWidget.cs" />
     <Compile Include="Widgets\ClockWidget.cs" />
     <Compile Include="Widgets\CurrentWeatherWidget.cs" />
+    <Compile Include="Widgets\LoadingWidget.cs" />
     <Compile Include="Widgets\TextClockWidget.cs" />
     <Compile Include="Widgets\ToolBarSeparator.cs" />
     <Compile Include="Widgets\WifiWidget.cs" />

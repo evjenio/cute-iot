@@ -8,7 +8,7 @@ namespace CuteIoT.Widgets
         public int X { get; set; } = 100;
         public int Y { get; set; } = 5;
         public int H { get; set; } = 20;
-        public int W { get; set; } = 50;
+        public int W { get; set; } = 60;
 
         public void Draw(Display display, DateTime dateTime)
         {

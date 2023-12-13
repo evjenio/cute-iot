@@ -158,8 +158,9 @@ namespace CuteIoT.Epaper
 
         public void UpdateWindow(int x, int y, int w, int h)
         {
-            if (x >= GDEH0213B73_WIDTH) return;
-            if (y >= GDEH0213B73_HEIGHT) return;
+#if DEBUG
+            DrawRect(x, y, w, h, Color.Black);
+#endif
 
             Rotate(ref x, ref y, ref w, ref h);
 

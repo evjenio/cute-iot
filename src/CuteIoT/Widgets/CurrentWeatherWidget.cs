@@ -8,7 +8,7 @@ namespace CuteIoT.Widgets
     {
         public int X { get; set; } = 80;
         public int Y { get; set; } = 50;
-        private const int H = 48+6;
+        private const int H = 48 + 12;
         //private const int W = 2 * 48;
         private const int IconHeight = 48;
         private const int IconWidth = 48;
@@ -41,7 +41,7 @@ namespace CuteIoT.Widgets
 
             //icon
             display.DrawBitmap(Snowflake, X, Y, IconWidth, IconHeight, Color.White);
-            
+
             //temp
             display.SetCursor(X + IconWidth + 5, Y + 3);
             display.SetFontSize(3);
@@ -59,7 +59,7 @@ namespace CuteIoT.Widgets
             display.Write("o");
 
             // conditions
-            display.SetCursor(X, Y + IconHeight);
+            display.SetCursor(X, Y + IconHeight + 2);
             display.Write(weatherResponse.Weather[0].Main + " @ " + dt.ToString("HH:mm:ss"));
 
             display.UpdateWindow(X, Y, display.Width - X - 1, H);

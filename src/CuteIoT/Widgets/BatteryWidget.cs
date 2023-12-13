@@ -5,8 +5,8 @@ namespace CuteIoT.Widgets
 {
     internal class BatteryWidget
     {
-        public int X { get; set; } = 0;
-        public int Y { get; set; } = 226;
+        public int X { get; set; } = 226;
+        public int Y { get; set; } = 0;
         public int H { get; set; } = 24;
         public int W { get; set; } = 24;
 
