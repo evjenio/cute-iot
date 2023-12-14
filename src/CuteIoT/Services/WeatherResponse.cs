@@ -14,14 +14,14 @@ namespace CuteIoT.Services
 
     internal class MainModel
     {
-        public double Temp { get; set; }
-        public double Feels_Like { get; set; }
-        public double Humidity { get; set; }
+        public float Temp { get; set; }
+        public float Feels_Like { get; set; }
+        public float Humidity { get; set; }
     }
 
     internal class WindModel
     {
-        public double Speed { get; set; }
+        public float Speed { get; set; }
     }
 
     internal class WeatherModel

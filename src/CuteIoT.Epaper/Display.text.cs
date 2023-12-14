@@ -22,6 +22,11 @@ namespace CuteIoT.Epaper
             cursorY += y;
         }
 
+        public void AddCursorX(int x)
+        {
+            cursorX += x;
+        }
+
         public void SetFontSize(int size)
         {
             textSizeX = size > 0 ? size : 1;
