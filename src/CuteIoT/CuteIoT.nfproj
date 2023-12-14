@@ -23,14 +23,12 @@
     <Compile Include="Resources\Bitmaps.Dino.cs" />
     <Compile Include="Resources\Bitmaps.CuteCat.cs" />
     <Compile Include="Resources\Bitmaps.CuteCatSleeping.cs" />
-    <Compile Include="Resources\Bitmaps.Numbers.cs" />
     <Compile Include="Services\Configuration.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\WeatherService.cs" />
     <Compile Include="Services\WeatherResponse.cs" />
     <Compile Include="Services\WifiService.cs" />
     <Compile Include="Widgets\BatteryWidget.cs" />
-    <Compile Include="Widgets\ClockWidget.cs" />
     <Compile Include="Widgets\CurrentWeatherWidget.cs" />
     <Compile Include="Widgets\LoadingWidget.cs" />
     <Compile Include="Widgets\TextClockWidget.cs" />
