@@ -23,6 +23,7 @@
     <Compile Include="Resources\Bitmaps.Dino.cs" />
     <Compile Include="Resources\Bitmaps.CuteCat.cs" />
     <Compile Include="Resources\Bitmaps.CuteCatSleeping.cs" />
+    <Compile Include="Resources\Bitmaps.Weather.cs" />
     <Compile Include="Services\Configuration.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\WeatherService.cs" />
