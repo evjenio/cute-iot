@@ -16,10 +16,20 @@ namespace CuteIoT.Widgets
             0xf0, 0x0f, 0xe0, 0x1f, 0xfe, 0x1f, 0xfe, 0x3f, 0xfe, 0x7f, 0xfe, 0x7f, 0xfe, 0xff, 0xfe, 0xff
         };
 
-        public void Draw(Display display)
+        private static readonly byte[] Battery = {
+            // 'icons8-battery-16', 16x16px
+            0xfc, 0x3f, 0xf1, 0x8f, 0xe7, 0xe7, 0xef, 0xf7, 0xef, 0xf7, 0xef, 0xf7, 0xef, 0xf7, 0xef, 0xf7,
+            0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xf0, 0x0f
+        };
+
+        public void Draw(Display display, string voltage)
         {
-            display.DrawBitmap(Charging, X, Y, W, H, Color.White);
-            display.UpdateWindow(X, Y, W, H);
+            const int xOffset = 29;
+            display.SetFontSize(1);
+            display.SetCursor(X - xOffset, Y + 5);
+            display.Write(voltage + "v");
+            display.DrawBitmap(Battery, X, Y, W, H, Color.White);
+            display.UpdateWindow(X - xOffset, Y, W + xOffset, H);
         }
     }
 }

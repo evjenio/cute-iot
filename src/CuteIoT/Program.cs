@@ -13,9 +13,11 @@ namespace CuteIoT
     {
         private static Display _display = null!;
         private static WeatherService _weather = null!;
+        private static BatteryService _batteryService = null!;
         private static ConfigurationOptions _configuration = null!;
 
         private static readonly ConfigurationService _configurationService = new();
+
         private static readonly LoadingWidget _loadingWidget = new();
         private static readonly WifiWidget _wifiWidget = new();
         private static readonly TextClockWidget _textClockWidget = new();
@@ -25,6 +27,8 @@ namespace CuteIoT
         public static void Main()
         {
             nanoFramework.Json.Configuration.Settings.CaseSensitive = false;
+
+            _batteryService = new();
 
             _display = new Display();
             _display.Init();
@@ -51,9 +55,10 @@ namespace CuteIoT
         private static void DrawClockAndToolbar(object? p)
         {
             var datetime = DateTime.UtcNow.AddSeconds(_configuration.Timezone);
+            var batteryVoltage = _batteryService.ReadVoltage();
             lock (_display)
             {
-                _batteryWidget.Draw(_display);
+                _batteryWidget.Draw(_display, batteryVoltage);
                 _textClockWidget.Draw(_display, datetime);
                 _wifiWidget.Draw(_display);
             }
