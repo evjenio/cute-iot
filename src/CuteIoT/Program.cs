@@ -17,7 +17,6 @@ namespace CuteIoT
         private static readonly ConfigurationService _configurationService = new();
         private static readonly LoadingWidget _loadingWidget = new();
         private static readonly WifiWidget _wifiWidget = new();
-        private static readonly ToolBarSeparator _toolBarSeparator = new();
         private static readonly TextClockWidget _textClockWidget = new();
         private static readonly CurrentWeatherWidget _currentWeatherWidget = new();
         private static readonly BatteryWidget _batteryWidget = new();
@@ -40,7 +39,6 @@ namespace CuteIoT
 
             _weather = new WeatherService(_configuration, _currentWeatherWidget);
 
-            _toolBarSeparator.Draw(_display);
             DrawClockAndToolbar(null);
 
             var timer1Minute = new Timer(DrawClockAndToolbar, null, TimeSpan.FromMinutes(1).Subtract(TimeSpan.FromSeconds(DateTime.UtcNow.Second)), TimeSpan.FromMinutes(1));

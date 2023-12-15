@@ -31,8 +31,9 @@ namespace CuteIoT.Widgets
             display.Write("o");
 
             // hum
-            display.AddCursorX(5);
-            display.AddCursorY(10);
+            display.DrawBitmap(Icon.Hygrometer, display.CursorX + 5, display.CursorY + 3, 12, 12, Color.White);
+            display.AddCursorX(20);
+            display.AddCursorY(6);
             display.Write(Math.Round(weatherResponse.Main.Humidity).ToString("F0") + "%");
 
             //feels like
@@ -44,18 +45,15 @@ namespace CuteIoT.Widgets
             display.Write("o");
 
             // wind
-            display.AddCursorX(5);
+            display.DrawBitmap(Icon.WindGauge, display.CursorX + 5, display.CursorY + 3, 12, 12, Color.White);
+            display.AddCursorX(20);
             display.AddCursorY(6);
             display.Write(Math.Round(weatherResponse.Wind.Speed).ToString() + "m/s");
 
             // conditions
-            display.SetFontSize(2);
-            display.SetCursor(X, Y + Icon.Height + 2);
-            display.Write(weatherResponse.Weather[0].Description);
             display.SetFontSize(1);
-            display.AddCursorX(5);
-            display.AddCursorY(6);
-            display.Write(dt.ToString("HH:mm"));
+            display.SetCursor(X, Y + Icon.Height + 3);
+            display.Write(weatherResponse.Weather[0].Description + " @ " + dt.ToString("HH:mm"));
 
             display.UpdateWindow(X, Y, display.Width - X, display.Height - Y);
         }

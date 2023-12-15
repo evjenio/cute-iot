@@ -11,6 +11,9 @@ namespace CuteIoT.Epaper
         private int textSizeX = 7;
         private int textSizeY = 7;
 
+        public int CursorX => cursorX;
+        public int CursorY => cursorY;
+
         public void SetCursor(int x, int y)
         {
             cursorX = x;
