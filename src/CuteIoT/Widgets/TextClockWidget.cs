@@ -12,6 +12,9 @@ namespace CuteIoT.Widgets
 
         public void Draw(Display display, DateTime dateTime)
         {
+            // Fill white background
+            display.WriteFillRect(X, Y, W, H, Color.White);
+
             display.SetCursor(X, Y);
             display.SetFontSize(2);
             display.SetTextColor(Color.Black);

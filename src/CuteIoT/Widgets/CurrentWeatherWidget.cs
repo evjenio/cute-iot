@@ -14,6 +14,9 @@ namespace CuteIoT.Widgets
 
         public void Draw(Display display, WeatherResponse weatherResponse)
         {
+            // Fill white background
+            display.WriteFillRect(X, Y, display.Width - X, display.Height - Y, Color.White);
+
             var dt = DateTime.FromUnixTimeSeconds(weatherResponse.Dt).AddSeconds(weatherResponse.Timezone);
 
             //icon
@@ -27,10 +30,10 @@ namespace CuteIoT.Widgets
             display.SetFontSize(1);
             display.Write("o");
 
-            // wind
+            // hum
             display.AddCursorX(5);
             display.AddCursorY(10);
-            display.Write(Math.Round(weatherResponse.Main.Humidity).ToString() + "%");
+            display.Write(Math.Round(weatherResponse.Main.Humidity).ToString("F0") + "%");
 
             //feels like
             display.SetCursor(X + Icon.Width + 5, Y + 31);
@@ -40,9 +43,9 @@ namespace CuteIoT.Widgets
             display.SetFontSize(1);
             display.Write("o");
 
-            // hum
+            // wind
             display.AddCursorX(5);
-            display.AddCursorY(5);
+            display.AddCursorY(6);
             display.Write(Math.Round(weatherResponse.Wind.Speed).ToString() + "m/s");
 
             // conditions
@@ -51,7 +54,7 @@ namespace CuteIoT.Widgets
             display.Write(weatherResponse.Weather[0].Description);
             display.SetFontSize(1);
             display.AddCursorX(5);
-            display.AddCursorY(5);
+            display.AddCursorY(6);
             display.Write(dt.ToString("HH:mm"));
 
             display.UpdateWindow(X, Y, display.Width - X, display.Height - Y);
