@@ -3,6 +3,7 @@ using System.Threading;
 using CuteIoT.Epaper;
 using CuteIoT.Widgets;
 using CuteIoT.Services;
+using nanoFramework.Hardware.Esp32;
 
 #nullable enable
 
@@ -12,7 +13,7 @@ namespace CuteIoT
     {
         private static Display _display = null!;
         private static WeatherService _weather = null!;
-        private static Configuration _configuration = null!;
+        private static ConfigurationOptions _configuration = null!;
 
         private static readonly ConfigurationService _configurationService = new();
         private static readonly LoadingWidget _loadingWidget = new();
@@ -39,7 +40,7 @@ namespace CuteIoT
 
             _weather = new WeatherService(_configuration, _currentWeatherWidget);
 
-            DrawClockAndToolbar(null);
+            DrawClockAndToolbar(true);
 
             var timer1Minute = new Timer(DrawClockAndToolbar, null, TimeSpan.FromMinutes(1).Subtract(TimeSpan.FromSeconds(DateTime.UtcNow.Second)), TimeSpan.FromMinutes(1));
             var timer30Minute = new Timer(DrawWeather, null, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(15));
@@ -56,6 +57,13 @@ namespace CuteIoT
                 _textClockWidget.Draw(_display, datetime);
                 _wifiWidget.Draw(_display);
             }
+#if !DEBUG
+            if (p is null)
+            {
+                Sleep.EnableWakeupByTimer(TimeSpan.FromSeconds(50));
+                Sleep.StartLightSleep();
+            }
+#endif
         }
 
         private static void DrawWeather(object? p)

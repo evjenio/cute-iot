@@ -2,7 +2,7 @@
 
 namespace CuteIoT.Services
 {
-    internal class Configuration
+    internal class ConfigurationOptions
     {
         public double Timezone { get; set; }
         public string Ssid { get; set; }

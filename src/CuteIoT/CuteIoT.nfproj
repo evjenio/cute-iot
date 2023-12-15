@@ -24,7 +24,7 @@
     <Compile Include="Resources\Bitmaps.CuteCat.cs" />
     <Compile Include="Resources\Bitmaps.CuteCatSleeping.cs" />
     <Compile Include="Resources\Bitmaps.Weather.cs" />
-    <Compile Include="Services\Configuration.cs" />
+    <Compile Include="Services\ConfigurationOptions.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\WeatherService.cs" />
     <Compile Include="Services\WeatherResponse.cs" />
@@ -41,6 +41,9 @@
   <ItemGroup>
     <Reference Include="mscorlib">
       <HintPath>..\..\packages\nanoFramework.CoreLibrary.1.15.5\lib\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="nanoFramework.Hardware.Esp32">
+      <HintPath>..\..\packages\nanoFramework.Hardware.Esp32.1.6.12\lib\nanoFramework.Hardware.Esp32.dll</HintPath>
     </Reference>
     <Reference Include="nanoFramework.Json">
       <HintPath>..\..\packages\nanoFramework.Json.2.2.103\lib\nanoFramework.Json.dll</HintPath>

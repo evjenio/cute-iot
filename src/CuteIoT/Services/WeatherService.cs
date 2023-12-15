@@ -4,6 +4,7 @@ using System.Net;
 using CuteIoT.Epaper;
 using CuteIoT.Widgets;
 using nanoFramework.Json;
+using nanoFramework.Networking;
 
 #nullable enable
 
@@ -11,10 +12,10 @@ namespace CuteIoT.Services
 {
     internal class WeatherService
     {
-        private readonly Configuration _configuration;
+        private readonly ConfigurationOptions _configuration;
         private readonly CurrentWeatherWidget _currentWeatherWidget;
 
-        public WeatherService(Configuration configuration, CurrentWeatherWidget currentWeatherWidget)
+        public WeatherService(ConfigurationOptions configuration, CurrentWeatherWidget currentWeatherWidget)
         {
             _configuration = configuration;
             _currentWeatherWidget = currentWeatherWidget;
@@ -22,6 +23,14 @@ namespace CuteIoT.Services
 
         public void Refresh(Display display)
         {
+            while (WifiNetworkHelper.Status != NetworkHelperStatus.NetworkIsReady)
+            {
+                Debug.Write("Wifi reconnecting:");
+                var success = WifiNetworkHelper.Reconnect();
+                Debug.Write(success ? "ok" : "fail");
+            }
+
+
             var response = Fetch();
             if (response == null)
             {
@@ -42,8 +51,9 @@ namespace CuteIoT.Services
 
             try
             {
-                Debug.WriteLine("Fetching weater api");
+                Debug.Write("Fetching weater api:");
                 using var httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                Debug.WriteLine(httpWebResponse.StatusCode.ToString());
                 using var responseStream = httpWebResponse.GetResponseStream();
                 return (WeatherResponse)JsonConvert.DeserializeObject(responseStream, typeof(WeatherResponse));
             }

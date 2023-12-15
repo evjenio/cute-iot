@@ -18,7 +18,7 @@ namespace CuteIoT.Services
             _internalPath = internalPath;
         }
 
-        public void Save(Configuration configuration)
+        public void Save(ConfigurationOptions configuration)
         {
             if (File.Exists(_internalPath))
             {
@@ -32,7 +32,7 @@ namespace CuteIoT.Services
             file.Flush();
         }
 
-        public Configuration Read()
+        public ConfigurationOptions Read()
         {
             if (!File.Exists(_internalPath))
             {
@@ -43,7 +43,7 @@ namespace CuteIoT.Services
             using var file = File.OpenText(_internalPath);
             var text = file.ReadToEnd();
             Debug.WriteLine(text);
-            return (Configuration)JsonConvert.DeserializeObject(text, typeof(Configuration));
+            return (ConfigurationOptions)JsonConvert.DeserializeObject(text, typeof(ConfigurationOptions));
         }
     }
 }

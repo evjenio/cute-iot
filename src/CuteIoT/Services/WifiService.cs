@@ -8,10 +8,10 @@ namespace CuteIoT.Services
 {
     internal class WifiService
     {
-        private readonly Configuration _configuration;
+        private readonly ConfigurationOptions _configuration;
         private readonly WifiWidget _wifiWidget;
 
-        public WifiService(Configuration configuration, WifiWidget wifiWidget)
+        public WifiService(ConfigurationOptions configuration, WifiWidget wifiWidget)
         {
             _configuration = configuration;
             _wifiWidget = wifiWidget;
