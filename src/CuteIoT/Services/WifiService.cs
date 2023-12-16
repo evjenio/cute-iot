@@ -1,38 +1,30 @@
-﻿using System;
-using System.Threading;
-using CuteIoT.Epaper;
+﻿using System.Diagnostics;
 using nanoFramework.Networking;
-using CuteIoT.Widgets;
 
 namespace CuteIoT.Services
 {
     internal class WifiService
     {
         private readonly ConfigurationOptions _configuration;
-        private readonly WifiWidget _wifiWidget;
 
-        public WifiService(ConfigurationOptions configuration, WifiWidget wifiWidget)
+        public WifiService(ConfigurationOptions configuration)
         {
             _configuration = configuration;
-            _wifiWidget = wifiWidget;
         }
 
-        public void Connect(Display display)
+        public bool Connect()
         {
-            //Draw initial state
-            _wifiWidget.Draw(display);
 
-            bool connected;
-            do
+            bool connected =false;
+            int count = 0;
+            while (WifiNetworkHelper.Status != NetworkHelperStatus.NetworkIsReady && count++ < 4)
             {
-                connected = WifiNetworkHelper.ConnectDhcp(_configuration.Ssid, _configuration.Password);
+                Debug.WriteLine("Wifi: connecting");
+                connected = WifiNetworkHelper.ConnectDhcp(_configuration.Ssid, _configuration.Password, requiresDateTime: true);
+                Debug.WriteLine("Wifi: " + WifiNetworkHelper.Status.ToString());
+            }
 
-                _wifiWidget.Draw(display);
-                if (!connected)
-                {
-                    Thread.Sleep(TimeSpan.FromMinutes(1));
-                }
-            } while (!connected);
+            return connected;
         }
     }
 }

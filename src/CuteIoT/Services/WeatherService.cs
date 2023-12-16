@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
-using CuteIoT.Epaper;
-using CuteIoT.Widgets;
 using nanoFramework.Json;
 using nanoFramework.Networking;
 
@@ -13,33 +11,34 @@ namespace CuteIoT.Services
     internal class WeatherService
     {
         private readonly ConfigurationOptions _configuration;
-        private readonly CurrentWeatherWidget _currentWeatherWidget;
 
-        public WeatherService(ConfigurationOptions configuration, CurrentWeatherWidget currentWeatherWidget)
+        public WeatherService(ConfigurationOptions configuration)
         {
             _configuration = configuration;
-            _currentWeatherWidget = currentWeatherWidget;
         }
 
-        public void Refresh(Display display)
+        public WeatherResponse? Get()
         {
-            while (WifiNetworkHelper.Status != NetworkHelperStatus.NetworkIsReady)
+            int count = 0;
+            while (WifiNetworkHelper.Status != NetworkHelperStatus.NetworkIsReady && count++ < 4)
             {
                 Debug.Write("Wifi reconnecting:");
                 var success = WifiNetworkHelper.Reconnect();
                 Debug.Write(success ? "ok" : "fail");
             }
 
+            if (WifiNetworkHelper.Status != NetworkHelperStatus.NetworkIsReady)
+            {
+                return null;
+            }
 
             var response = Fetch();
             if (response == null)
             {
                 response = Fetch();
             }
-            if (response != null)
-            {
-                _currentWeatherWidget.Draw(display, response);
-            }
+
+            return response;
         }
 
         private WeatherResponse? Fetch()

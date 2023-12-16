@@ -13,13 +13,13 @@ namespace CuteIoT.Services
             _adc = new AdcController();
         }
 
-        public string ReadVoltage()
+        public double ReadVoltage()
         {
             using var channel = _adc.OpenChannel(7);
             var value = channel.ReadValue();
-            var batteryVoltage = (value / 4095.0 * 2.0 * 3.3 * (1100 / 1000.0)).ToString("F2");
+            var batteryVoltage = (value / 4095.0 * 2.0 * 3.3 * (1100 / 1000.0));
 
-            Debug.WriteLine("Battery: " + batteryVoltage + "v");
+            Debug.WriteLine("Battery: " + batteryVoltage.ToString("F2") + "v");
             return batteryVoltage;
         }
     }

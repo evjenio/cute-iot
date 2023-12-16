@@ -33,7 +33,7 @@ namespace CuteIoT.Widgets
             {
                 display.DrawBitmap(Offline, X, Y, W, H, Color.White);
             }
-            display.UpdateWindow(X, Y, W, H);
+            //display.UpdateWindow(X, Y, W, H);
         }
     }
 }

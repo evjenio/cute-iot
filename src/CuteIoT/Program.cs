@@ -4,6 +4,9 @@ using CuteIoT.Epaper;
 using CuteIoT.Widgets;
 using CuteIoT.Services;
 using nanoFramework.Hardware.Esp32;
+using nanoFramework.Networking;
+using System.Diagnostics;
+using System.Device.Gpio;
 
 #nullable enable
 
@@ -12,14 +15,14 @@ namespace CuteIoT
     public class Program
     {
         private static Display _display = null!;
-        private static WeatherService _weather = null!;
+        private static WeatherService _weatherService = null!;
         private static BatteryService _batteryService = null!;
         private static ConfigurationOptions _configuration = null!;
 
         private static readonly ConfigurationService _configurationService = new();
 
-        private static readonly LoadingWidget _loadingWidget = new();
         private static readonly WifiWidget _wifiWidget = new();
+        private static readonly NoBatteryWidget _noBatteryWidget = new();
         private static readonly TextClockWidget _textClockWidget = new();
         private static readonly CurrentWeatherWidget _currentWeatherWidget = new();
         private static readonly BatteryWidget _batteryWidget = new();
@@ -27,56 +30,84 @@ namespace CuteIoT
         public static void Main()
         {
             nanoFramework.Json.Configuration.Settings.CaseSensitive = false;
+            try
+            {
+                Debug.WriteLine("Starting...");
 
-            _batteryService = new();
+                var wakeupCause = Sleep.GetWakeupCause();
+                Debug.WriteLine($"Wakeup by {wakeupCause}");
+                if (wakeupCause == Sleep.WakeupCause.Undefined)
+                {
+                    Debug.WriteLine("Waiting 20 sec for FW update...");
+                    Thread.Sleep(TimeSpan.FromSeconds(20));
+                }
 
-            _display = new Display();
-            _display.Init();
-            _display.SetRotation(1);
+                _batteryService = new();
 
-            _loadingWidget.Draw(_display);
+                _display = new Display();
+                _display.Init();
+                _display.SetRotation(1);
+                _display.FillScreen(Color.White);
 
-            _configuration = _configurationService.Read();
+                var batteryVoltage = _batteryService.ReadVoltage();
+                if (batteryVoltage < 3.5)
+                {
+                    _noBatteryWidget.Draw(_display);
+                    GoToDeepSleep(TimeSpan.FromMinutes(15));
+                    return;
+                }
 
-            var wifi = new WifiService(_configuration, _wifiWidget);
-            wifi.Connect(_display);
-            _display.UpdateWindow(0, 0, _display.Width, _display.Height);
+                _configuration = _configurationService.Read();
 
-            _weather = new WeatherService(_configuration, _currentWeatherWidget);
+                _weatherService = new WeatherService(_configuration);
+                var date = DateTime.UtcNow;
+                if (date.Minute % 15 == 0 || date.Year < 2023)
+                {
+                    var wifi = new WifiService(_configuration);
+                    var connected = wifi.Connect();
+                }
 
-            DrawClockAndToolbar(true);
-
-            var timer1Minute = new Timer(DrawClockAndToolbar, null, TimeSpan.FromMinutes(1).Subtract(TimeSpan.FromSeconds(DateTime.UtcNow.Second)), TimeSpan.FromMinutes(1));
-            var timer30Minute = new Timer(DrawWeather, null, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(15));
-
-            Thread.Sleep(Timeout.Infinite);
+                DrawWidgets(batteryVoltage);
+            }
+            catch
+            {
+                // just to go to sleep
+            }
+            finally
+            {
+                GoToDeepSleep(TimeSpan.FromSeconds(45));
+                Thread.Sleep(Timeout.Infinite);
+            }
         }
 
-        private static void DrawClockAndToolbar(object? p)
+        private static void DrawWidgets(double batteryVoltage)
         {
             var datetime = DateTime.UtcNow.AddSeconds(_configuration.Timezone);
-            var batteryVoltage = _batteryService.ReadVoltage();
-            lock (_display)
+
+            _batteryWidget.Draw(_display, batteryVoltage.ToString("F2"));
+            _textClockWidget.Draw(_display, datetime);
+            _wifiWidget.Draw(_display);
+
+            if (WifiNetworkHelper.Status != NetworkHelperStatus.NetworkIsReady)
             {
-                _batteryWidget.Draw(_display, batteryVoltage);
-                _textClockWidget.Draw(_display, datetime);
-                _wifiWidget.Draw(_display);
+                _display.UpdateWindow(0, 0, _display.Width, 20);
+                return;
             }
-#if !DEBUG
-            if (p is null)
-            {
-                Sleep.EnableWakeupByTimer(TimeSpan.FromSeconds(50));
-                Sleep.StartLightSleep();
-            }
-#endif
+
+            var response = _weatherService.Get();
+
+            _currentWeatherWidget.Draw(_display, response);
+            _display.UpdateWindow(0, 0, _display.Width, _display.Height);
         }
 
-        private static void DrawWeather(object? p)
+        private static void GoToDeepSleep(TimeSpan period)
         {
-            lock (_display)
-            {
-                _weather.Refresh(_display);
-            }
+            Debug.WriteLine("Going to deep sleep");
+            Sleep.EnableWakeupByTimer(period);
+            //var gpioController = new GpioController();
+            //var pin = gpioController.OpenPin(13, PinMode.Output);
+            //pin.Write(PinValue.High);
+            Sleep.StartDeepSleep();
         }
     }
 }
