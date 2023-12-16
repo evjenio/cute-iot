@@ -60,8 +60,9 @@ namespace CuteIoT
                 _configuration = _configurationService.Read();
 
                 _weatherService = new WeatherService(_configuration);
+                
                 var date = DateTime.UtcNow;
-                if (date.Minute % 15 == 0 || date.Year < 2023)
+                if (date.Minute % 20 == 0 || wakeupCause == Sleep.WakeupCause.Undefined || date.Year < 2023)
                 {
                     var wifi = new WifiService(_configuration);
                     var connected = wifi.Connect();
@@ -91,6 +92,7 @@ namespace CuteIoT
             if (WifiNetworkHelper.Status != NetworkHelperStatus.NetworkIsReady)
             {
                 _display.UpdateWindow(0, 0, _display.Width, 20);
+                Debug.WriteLine("Skiping weather update");
                 return;
             }
 
@@ -104,9 +106,10 @@ namespace CuteIoT
         {
             Debug.WriteLine("Going to deep sleep");
             Sleep.EnableWakeupByTimer(period);
-            //var gpioController = new GpioController();
-            //var pin = gpioController.OpenPin(13, PinMode.Output);
-            //pin.Write(PinValue.High);
+            // Enable low power consumption of mem
+            var gpioController = new GpioController();
+            var pin13 = gpioController.OpenPin(13, PinMode.Output);
+            pin13.Write(PinValue.High);
             Sleep.StartDeepSleep();
         }
     }
