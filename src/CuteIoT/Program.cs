@@ -85,7 +85,7 @@ namespace CuteIoT
         {
             var datetime = DateTime.UtcNow.AddSeconds(_configuration.Timezone);
 
-            _batteryWidget.Draw(_display, batteryVoltage.ToString("F2"));
+            _batteryWidget.Draw(_display, batteryVoltage);
             _textClockWidget.Draw(_display, datetime);
             _wifiWidget.Draw(_display);
 

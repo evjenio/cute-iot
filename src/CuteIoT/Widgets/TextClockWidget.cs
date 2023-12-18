@@ -5,7 +5,7 @@ namespace CuteIoT.Widgets
 {
     internal class TextClockWidget
     {
-        public int X { get; set; } = 48;
+        public int X { get; set; } = 40;
         public int Y { get; set; } = 0;
         public int H { get; set; } = 19;
         public int W { get; set; } = 145;
